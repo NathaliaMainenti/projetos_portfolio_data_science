@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUC-PR e Detecção de Fraude — Nathalia Mainenti</title>
+<meta name="description" content="Por que o mercado de detecção de fraude usa AUC-PR em vez de ROC, o que é considerado um modelo bom, e como SMOTE é realmente usado na prática — com fontes e um estudo de caso real.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="blog.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand">Nathalia Mainenti</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html#sobre">Sobre</a></li>
+      <li><a href="../index.html#skills">Skills</a></li>
+      <li><a href="../index.html#projetos">Projetos</a></li>
+      <li><a href="index.html" class="active">Blog</a></li>
+      <li><a href="../index.html#contato">Contato</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Alternar tema claro/escuro">
+        <svg id="iconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg id="iconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header class="article-header">
+  <div class="container">
+    <a href="index.html" class="back-link">← Blog</a>
+    <div class="post-meta">
+      <span>Classificação</span>
+      <span class="dot"></span>
+      <span>7 min de leitura</span>
+    </div>
+    <h1>AUC-PR e detecção de fraude: o que o mercado realmente usa</h1>
+    <p class="dek">
+      Por que ROC engana em desbalanceamento extremo, o que a indústria de fraude usa no lugar,
+      e se SMOTE é coisa de tutorial ou também aparece em produção — com fontes.
+    </p>
+  </div>
+</header>
+
+<article class="post-body">
+
+  <p class="lede">
+    Detecção de fraude é o caso mais extremo de desbalanceamento que existe em classificação —
+    normalmente bem menos de 1% das transações são fraude. Isso quebra a régua "padrão" de
+    avaliação de modelo, e o mercado desenvolveu práticas próprias pra lidar com isso.
+  </p>
+
+  <h2>O que é AUC-PR</h2>
+  <p>
+    Mesmo princípio da curva ROC, só que trocando os eixos: em vez de Taxa de Falso Positivo x
+    Taxa de Verdadeiro Positivo, a curva Precision-Recall plota <strong>Recall (x)</strong> contra
+    <strong>Precisão (y)</strong>, variando o limiar de decisão. A área embaixo dessa curva é o
+    AUC-PR — no scikit-learn, a função é <code>average_precision_score</code>.
+  </p>
+  <p>
+    A diferença que importa: na ROC, um modelo aleatório sempre dá AUC ≈ 0,5, não importa o
+    desbalanceamento. No PR, o "nível do chute aleatório" <strong>é a proporção de positivos na
+    base</strong>. Com 0,17% de fraude, um modelo que não aprendeu nada teria AUC-PR ≈ 0,0017 —
+    bem diferente do 0,5 fixo da ROC.
+  </p>
+
+  <h2>Por que a ROC engana em desbalanceamento extremo</h2>
+  <p>
+    A Taxa de Falso Positivo (eixo x da ROC) tem no denominador o número de
+    <strong>verdadeiros negativos</strong>. Com dezenas de milhares de transações legítimas, até
+    um volume grande de falsos positivos em número absoluto vira uma fração minúscula — a curva
+    ROC fica artificialmente bonita. A precisão não sofre dessa diluição: é
+    <code>VP / (VP + FP)</code> direto, sem o TN no meio.
+  </p>
+  <p>
+    Isso não é só um argumento intuitivo — é literalmente o tema de um paper de referência na
+    área: Saito &amp; Rehmsmeier (2015), publicado na <em>PLOS ONE</em>, mostra formalmente que a
+    curva Precision-Recall é mais informativa que a ROC especificamente ao avaliar classificadores
+    binários em datasets desbalanceados (<a href="https://doi.org/10.1371/journal.pone.0118432" target="_blank" rel="noopener">DOI: 10.1371/journal.pone.0118432</a>).
+  </p>
+
+  <div class="callout case">
+    <span class="callout-title">Estudo de caso — detecção de fraude em cartão de crédito</span>
+    Treinei 4 modelos num dataset real (284 mil transações, 0,17% fraude). A AUC-ROC de todos
+    ficou entre <strong>0,958 e 0,969</strong> — quase empatados, pouco útil pra decidir qual
+    usar. O AUC-PR contou outra história: <strong>0,672 a 0,796</strong> — uma diferença real,
+    grande o suficiente pra apontar com confiança qual modelo é melhor.
+  </div>
+
+  <figure>
+    <img src="../assets/img/fraude_3.png" alt="Comparação lado a lado entre curva ROC (parece ótima) e curva Precision-Recall (mostra o desafio real) para o modelo de detecção de fraude">
+    <figcaption>A mesma previsão, duas curvas — a ROC parece quase perfeita; a Precision-Recall mostra o trade-off de verdade.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="../assets/img/fraude_4.png" alt="Curvas Precision-Recall sobrepostas dos 4 modelos testados, mostrando diferenças reais de desempenho">
+    <figcaption>As curvas PR dos 4 modelos testados — aqui dá pra ver a diferença real de qualidade entre eles, coisa que a ROC não mostrava.</figcaption>
+  </figure>
+
+  <h2>O que o mercado realmente usa</h2>
+  <p>
+    Não é só uma métrica de ML isolada — a indústria de detecção de fraude combina várias
+    camadas de avaliação:
+  </p>
+  <ul>
+    <li><strong>PR-AUC</strong> como métrica de comparação entre modelos — é o que a literatura
+    técnica recomenda especificamente pra fraude, não é escolha nossa isolada.</li>
+    <li><strong>Recall a um FPR fixo</strong> — "quantas fraudes eu pego mantendo só X% de falso
+    positivo?" — métrica operacional, porque toda equipe de fraude tem capacidade limitada de
+    revisar alertas por dia.</li>
+    <li><strong>Métrica de negócio direta</strong> — valor de fraude evitado vs custo de revisar
+    falsos positivos (cada alerta falso custa tempo de analista e atrito com cliente legítimo).</li>
+    <li><strong>Múltiplos limiares de risco</strong>, não um corte só — faixas de "bloqueia
+    automático", "manda pra revisão manual", "libera".</li>
+  </ul>
+
+  <h2>"Modelo bom" não tem número universal</h2>
+  <p>
+    Não existe "PR-AUC de 0,8 é bom" fora de contexto — depende muito da taxa base de fraude do
+    negócio (cartão de crédito, e-commerce, seguro, cada um tem taxa e custo de erro diferente).
+    É a mesma lição do AUC/Gini de crédito: o benchmark é relativo ao mercado específico, não uma
+    régua fixa universal.
+  </p>
+
+  <h2>SMOTE: usado sim, mas com ressalvas reais</h2>
+  <p>
+    É prática comum na indústria, com bastante literatura aplicada usando — mas com dois
+    cuidados que valem saber antes de citar numa entrevista:
+  </p>
+
+  <div class="callout rigor">
+    <span class="callout-title">Cuidados com SMOTE</span>
+    <strong>Alternativa comum:</strong> <code>RandomUnderSampler</code> (reduzir a classe
+    majoritária em vez de gerar sintéticos da minoritária) — mais rápido, mas perde dado real.
+    <br><br>
+    <strong>Erro clássico:</strong> aplicar SMOTE <em>antes</em> do split treino/teste — isso
+    vaza informação sintética pro conjunto de teste e infla os resultados de forma artificial.
+    O jeito certo é aplicar só depois do split, e só no treino. Esse erro aparece com frequência
+    o suficiente pra valer a pena mencionar que você sabe evitá-lo.
+  </div>
+
+  <h2>Bônus: além do notebook</h2>
+  <p>
+    Produção real de detecção de fraude roda em <strong>tempo real</strong> — milissegundos por
+    transação, via streaming (ex: Kafka), não em lote como um notebook. É uma camada de
+    engenharia que um projeto de portfólio não cobre sozinho, mas vale saber que existe, caso
+    perguntem "e como isso rodaria em produção?".
+  </p>
+
+  <h2>Resumindo</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Prática</th><th>O que é</th><th>Por quê</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>AUC-PR</td><td>Métrica principal de comparação</td><td>Não infla com desbalanceamento extremo</td></tr>
+        <tr><td>Recall @ FPR fixo</td><td>Métrica operacional</td><td>Respeita a capacidade real da equipe de revisão</td></tr>
+        <tr><td>SMOTE só no treino</td><td>Regra de higiene de dado</td><td>Evita vazamento pro teste</td></tr>
+        <tr><td>Múltiplos limiares</td><td>Estratégia de decisão</td><td>Nem toda transação de risco merece a mesma ação</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    O padrão se repete: a métrica "certa" depende do formato do problema (aqui, o
+    desbalanceamento extremo), e a prática de mercado geralmente já resolveu essa pergunta antes
+    — vale pesquisar o que a indústria específica usa antes de aplicar a métrica "padrão" de
+    livro-texto sem questionar.
+  </p>
+
+  <h2>Fontes</h2>
+  <ul>
+    <li><a href="https://doi.org/10.1371/journal.pone.0118432" target="_blank" rel="noopener">Saito &amp; Rehmsmeier (2015) — The Precision-Recall Plot Is More Informative than the ROC Plot When Evaluating Binary Classifiers on Imbalanced Datasets, PLOS ONE</a></li>
+    <li><a href="https://fraud-detection-handbook.github.io/fraud-detection-handbook/Chapter_4_PerformanceMetrics/Introduction.html" target="_blank" rel="noopener">Reproducible Machine Learning for Credit Card Fraud Detection — Practical Handbook</a></li>
+    <li><a href="https://medium.com/@valeria.verzi1/understanding-model-evaluation-metrics-in-fraud-detection-beyond-accuracy-52b224ac0418" target="_blank" rel="noopener">Understanding Model Evaluation Metrics in Fraud Detection: Beyond Accuracy</a></li>
+  </ul>
+
+</article>
+
+<div class="article-footer">
+  <div class="project-link">
+    <div>
+      <h4>Veja a aplicação completa</h4>
+      <p>Notebook de detecção de fraude — 4 modelos, 3 técnicas de balanceamento, curvas PR e ajuste de limiar.</p>
+    </div>
+    <a href="#" class="btn btn-ghost" data-github-link>Ver notebook no GitHub →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Feito com HTML, CSS e JavaScript puro. © <span id="year"></span> Nathalia Mainenti.</p>
+  </div>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>

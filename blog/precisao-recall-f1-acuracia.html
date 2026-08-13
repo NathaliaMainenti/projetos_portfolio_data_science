@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Precisão, Recall, F1 e Acurácia — Nathalia Mainenti</title>
+<meta name="description" content="As métricas que saem da matriz de confusão, suas fórmulas, e o trade-off de priorizar uma em vez da outra — com um estudo de caso real de risco de crédito.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="blog.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand">Nathalia Mainenti</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html#sobre">Sobre</a></li>
+      <li><a href="../index.html#skills">Skills</a></li>
+      <li><a href="../index.html#projetos">Projetos</a></li>
+      <li><a href="index.html" class="active">Blog</a></li>
+      <li><a href="../index.html#contato">Contato</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Alternar tema claro/escuro">
+        <svg id="iconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg id="iconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header class="article-header">
+  <div class="container">
+    <a href="index.html" class="back-link">← Blog</a>
+    <div class="post-meta">
+      <span>Classificação</span>
+      <span class="dot"></span>
+      <span>8 min de leitura</span>
+    </div>
+    <h1>Precisão, recall, F1 e acurácia: o trade-off por trás da matriz de confusão</h1>
+    <p class="dek">
+      Quatro métricas, a mesma matriz de confusão, quatro respostas diferentes pra "meu modelo é
+      bom?" — e por que a resposta certa depende do custo de errar, não de matemática.
+    </p>
+  </div>
+</header>
+
+<article class="post-body">
+
+  <p class="lede">
+    Em classificação binária, "o modelo acertou X%" é uma pergunta incompleta. Acertou o quê?
+    Acertou quem ia inadimplir, ou acertou quem não ia? Errar pra um lado custa a mesma coisa que
+    errar pro outro? Todas as métricas deste post nascem da mesma tabela — a matriz de confusão —
+    mas cada uma responde a uma pergunta de negócio diferente.
+  </p>
+
+  <h2>A matriz de confusão</h2>
+  <p>
+    Em qualquer classificação binária, toda previsão cai em uma de quatro caixas, comparando o
+    que o modelo previu com o que realmente aconteceu:
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th></th><th>Previsto: Positivo</th><th>Previsto: Negativo</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Real: Positivo</strong></td><td>Verdadeiro Positivo (VP)</td><td>Falso Negativo (FN)</td></tr>
+        <tr><td><strong>Real: Negativo</strong></td><td>Falso Positivo (FP)</td><td>Verdadeiro Negativo (VN)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    No caso de risco de crédito que uso como exemplo neste post (prever se um tomador vai
+    inadimplir), isso fica:
+  </p>
+  <ul>
+    <li><strong>Verdadeiro Positivo (VP):</strong> o modelo previu inadimplência, e o tomador realmente inadimpliu.</li>
+    <li><strong>Falso Positivo (FP):</strong> o modelo previu inadimplência, mas o tomador pagou certinho — um bom cliente barrado à toa.</li>
+    <li><strong>Falso Negativo (FN):</strong> o modelo previu que ia pagar, mas o tomador inadimpliu — um calote que passou despercebido.</li>
+    <li><strong>Verdadeiro Negativo (VN):</strong> o modelo previu que ia pagar, e realmente pagou.</li>
+  </ul>
+
+  <h2>Acurácia</h2>
+  <p>
+    <code>Acurácia = (VP + VN) / (VP + VN + FP + FN)</code>
+  </p>
+  <p>
+    A pergunta que responde: <strong>"de tudo que o modelo previu, quanto ele acertou no
+    total?"</strong> É a métrica mais intuitiva — e a mais perigosa quando as classes são
+    desbalanceadas.
+  </p>
+
+  <div class="callout rigor">
+    <span class="callout-title">A armadilha da acurácia</span>
+    Na base de risco de crédito, só 6,6% dos tomadores realmente inadimplem. Um modelo que
+    <em>nunca aprende nada</em> e simplesmente chuta "não vai inadimplir" pra todo mundo já
+    acerta <strong>93,4%</strong> — parece ótimo, mas é inútil, porque erra exatamente os casos
+    que importam. O modelo de regressão logística treinado, no limiar padrão de 0,5, chega a
+    <strong>93,7%</strong> de acurácia — só 0,3 ponto percentual acima do "chute preguiçoso".
+    Olhando só a acurácia, dá pra achar que o modelo quase não aprendeu nada — e essa conclusão
+    é errada, como as próximas métricas mostram.
+  </div>
+
+  <h2>Precisão</h2>
+  <p>
+    <code>Precisão = VP / (VP + FP)</code>
+  </p>
+  <p>
+    A pergunta que responde: <strong>"das vezes que o modelo disse 'vai inadimplir', quantas
+    vezes ele realmente acertou?"</strong> Precisão alta significa poucos falsos alarmes — quando
+    o modelo aponta risco, você pode confiar.
+  </p>
+  <p>
+    No exemplo de crédito: se o banco usa o modelo pra decidir quem recusar, precisão baixa
+    significa recusar muita gente boa por engano (custo: perder clientes saudáveis e a receita
+    que eles trariam).
+  </p>
+
+  <h2>Recall (sensibilidade)</h2>
+  <p>
+    <code>Recall = VP / (VP + FN)</code>
+  </p>
+  <p>
+    A pergunta que responde: <strong>"de todo mundo que realmente ia inadimplir, quantos o
+    modelo conseguiu pegar?"</strong> Recall alto significa poucos casos de risco escapando
+    despercebidos.
+  </p>
+  <p>
+    No exemplo de crédito: recall baixo significa deixar passar gente que vai dar calote (custo:
+    o prejuízo direto do empréstimo não pago — geralmente maior que o custo de um falso positivo).
+  </p>
+
+  <h2>F1-score</h2>
+  <p>
+    <code>F1 = 2 × (Precisão × Recall) / (Precisão + Recall)</code>
+  </p>
+  <p>
+    É a <strong>média harmônica</strong> entre precisão e recall — não a média simples. A média
+    harmônica pune mais forte quando uma das duas é muito baixa (diferente da média aritmética,
+    que "esconde" um valor ruim atrás de outro bom). F1 alto exige as duas métricas
+    razoavelmente altas ao mesmo tempo.
+  </p>
+  <p>
+    A pergunta que responde: <strong>"existe um jeito de resumir precisão e recall num só
+    número, sem favorecer nenhuma das duas?"</strong> É um ponto de partida neutro — mas "neutro"
+    não é sempre o que o negócio precisa, como o estudo de caso abaixo mostra.
+  </p>
+
+  <div class="callout case">
+    <span class="callout-title">Estudo de caso — risco de crédito</span>
+    Treinei uma regressão logística pra prever inadimplência (AUC = 0,853). No limiar padrão de
+    decisão (0,5), a matriz de confusão no conjunto de teste (29.785 tomadores) ficou assim:
+  </div>
+
+  <figure>
+    <img src="../assets/img/credito_4.png" alt="Matriz de confusão do modelo de risco de crédito no limiar 0,5, mostrando 317 verdadeiros positivos, 27596 verdadeiros negativos, 218 falsos positivos e 1654 falsos negativos">
+    <figcaption>Matriz de confusão no limiar padrão (0,5): 317 verdadeiros positivos, 1.654 falsos negativos — a maioria dos inadimplentes reais passou despercebida.</figcaption>
+  </figure>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Limiar</th><th>Precisão</th><th>Recall</th><th>F1</th><th>Acurácia</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0,50 (padrão)</td><td>0,593</td><td>0,161</td><td>0,253</td><td>93,7%</td></tr>
+        <tr><td>0,15 (melhor F1)</td><td>0,394</td><td>0,501</td><td>0,441</td><td>91,6%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Baixando o limiar de decisão de 0,5 para 0,15, o recall salta de <strong>16% para 50%</strong>
+    — o modelo passa a capturar 3x mais inadimplentes reais. O preço: a precisão cai de 0,59 para
+    0,39 (mais falsos positivos), e — o detalhe mais contraintuitivo — <strong>a acurácia
+    piora</strong>, de 93,7% para 91,6%. Um modelo estritamente "melhor" no que realmente importa
+    (pegar quem vai dar calote) pode ter acurácia pior. É a prova concreta de que otimizar
+    acurácia e otimizar recall são objetivos diferentes, às vezes opostos.
+  </p>
+
+  <figure>
+    <img src="../assets/img/credito_5.png" alt="Gráfico de precisão, recall e F1 em função do limiar de decisão, de 0,05 a 0,9">
+    <figcaption>Precisão, recall e F1 em função do limiar de decisão. Recall cai conforme o limiar sobe; precisão sobe; o F1 (linha preta) atinge o pico num meio-termo — aqui, perto de 0,15.</figcaption>
+  </figure>
+
+  <h2>Vantagens e desvantagens de priorizar cada uma</h2>
+
+  <h3>Priorizar precisão</h3>
+  <p>
+    <strong>Quando faz sentido:</strong> o custo de um falso positivo é alto. Exemplos: marcar
+    um e-mail legítimo como spam (o usuário perde uma mensagem importante), ou recusar crédito a
+    um bom cliente (o banco perde receita e relacionamento).
+  </p>
+  <p>
+    <strong>Desvantagem:</strong> ao exigir mais confiança antes de marcar algo como positivo, o
+    modelo fica mais "tímido" — deixa passar mais casos reais (recall cai).
+  </p>
+
+  <h3>Priorizar recall</h3>
+  <p>
+    <strong>Quando faz sentido:</strong> o custo de um falso negativo é alto. Exemplos: deixar
+    passar uma fraude, deixar passar um diagnóstico de doença grave, deixar passar um tomador que
+    vai dar calote num valor alto.
+  </p>
+  <p>
+    <strong>Desvantagem:</strong> pra capturar mais casos reais, o modelo passa a "gritar risco"
+    com mais frequência — aumenta o número de falsos alarmes (precisão cai), o que tem custo
+    operacional (mais casos pra revisar manualmente, mais clientes bons incomodados).
+  </p>
+
+  <h3>Priorizar acurácia</h3>
+  <p>
+    <strong>Quando faz sentido:</strong> as classes estão razoavelmente balanceadas (nenhuma é
+    muito mais rara que a outra) e os dois tipos de erro custam parecido.
+  </p>
+  <p>
+    <strong>Desvantagem:</strong> em problemas desbalanceados — a maioria dos problemas
+    interessantes de negócio (fraude, inadimplência, doenças raras, churn) — acurácia alta pode
+    esconder um modelo que não pega nenhum caso da classe minoritária, exatamente a que importa.
+  </p>
+
+  <h3>Priorizar F1</h3>
+  <p>
+    <strong>Quando faz sentido:</strong> você não tem uma estimativa clara de qual erro custa
+    mais caro, e quer um critério único e neutro pra comparar modelos ou escolher um limiar.
+  </p>
+  <p>
+    <strong>Desvantagem:</strong> "neutro" é uma escolha, não uma ausência de escolha — o F1
+    assume que um falso positivo e um falso negativo custam a mesma coisa, o que raramente é
+    verdade no mundo real. No exemplo de crédito, o prejuízo de um empréstimo não pago tende a
+    ser bem maior que o custo de negar crédito a um bom pagador — nesse caso, otimizar F1 ainda
+    seria conservador demais; valeria priorizar recall mais que o F1 sugere.
+  </p>
+
+  <h2>Resumindo</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Métrica</th><th>Fórmula</th><th>Pergunta que responde</th><th>Prioriza quando</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Acurácia</td><td><code>(VP+VN)/total</code></td><td>Quanto acertei no geral?</td><td>Classes balanceadas, erros com custo parecido</td></tr>
+        <tr><td>Precisão</td><td><code>VP/(VP+FP)</code></td><td>Quando eu disse "sim", confio?</td><td>Falso positivo é caro</td></tr>
+        <tr><td>Recall</td><td><code>VP/(VP+FN)</code></td><td>Dos casos reais, quantos peguei?</td><td>Falso negativo é caro</td></tr>
+        <tr><td>F1</td><td><code>2·P·R/(P+R)</code></td><td>Equilíbrio entre as duas?</td><td>Custos de erro desconhecidos ou parecidos</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    A métrica "certa" não existe fora do contexto do problema — ela é definida pelo que custa
+    mais caro errar. Escolher uma métrica de avaliação é, na prática, uma decisão de negócio
+    disfarçada de decisão técnica.
+  </p>
+
+</article>
+
+<div class="article-footer">
+  <div class="project-link">
+    <div>
+      <h4>Veja a aplicação completa</h4>
+      <p>Notebook com o modelo de risco de crédito — tratamento de dados, regressão logística, odds ratios, curva ROC e a varredura de limiar completa.</p>
+    </div>
+    <a href="#" class="btn btn-ghost" data-github-link>Ver notebook no GitHub →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Feito com HTML, CSS e JavaScript puro. © <span id="year"></span> Nathalia Mainenti.</p>
+  </div>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>

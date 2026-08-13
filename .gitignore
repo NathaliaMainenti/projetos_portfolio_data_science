@@ -1,0 +1,9 @@
+# Datasets públicos grandes (excluídos do repo por tamanho — ver link de download no notebook do projeto)
+06-deteccao-fraude/creditcard.csv
+05-elasticidade-online-retail/online_retail_II.csv
+
+# Jupyter / Python
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.DS_Store

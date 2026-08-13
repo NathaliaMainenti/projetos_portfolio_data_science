@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>R², Curva ROC e Índice de Gini — Nathalia Mainenti</title>
+<meta name="description" content="Quando usar R², quando usar curva ROC/AUC e quando usar o índice de Gini — a métrica preferida do mercado de crédito — com fontes e um exemplo real de um modelo de risco de crédito.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="blog.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand">Nathalia Mainenti</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html#sobre">Sobre</a></li>
+      <li><a href="../index.html#skills">Skills</a></li>
+      <li><a href="../index.html#projetos">Projetos</a></li>
+      <li><a href="index.html" class="active">Blog</a></li>
+      <li><a href="../index.html#contato">Contato</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Alternar tema claro/escuro">
+        <svg id="iconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg id="iconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header class="article-header">
+  <div class="container">
+    <a href="index.html" class="back-link">← Blog</a>
+    <div class="post-meta">
+      <span>Métricas de modelo</span>
+      <span class="dot"></span>
+      <span>9 min de leitura</span>
+    </div>
+    <h1>R², curva ROC e índice de Gini: quando usar qual</h1>
+    <p class="dek">
+      Três métricas que aparecem nas mesmas conversas sobre "meu modelo é bom?" — mas que
+      respondem perguntas diferentes, em problemas diferentes, pra públicos diferentes.
+    </p>
+  </div>
+</header>
+
+<article class="post-body">
+
+  <p class="lede">
+    É fácil confundir essas três porque todas tentam responder "o modelo presta?" num único
+    número. Mas cada uma nasce de um tipo de problema diferente — e usar a errada não dá um
+    resultado "levemente impreciso", dá um resultado sem sentido.
+  </p>
+
+  <h2>R² — para regressão</h2>
+  <p>
+    <code>R² = 1 − (Soma dos erros² / Soma dos desvios da média²)</code>
+  </p>
+  <p>
+    Usado quando a variável prevista é <strong>contínua</strong> — preço, quantidade, renda,
+    taxa de rematrícula. Mede quanto da variação do target o modelo consegue explicar, numa
+    escala que vai (na prática) de 0 a 1.
+  </p>
+  <p>
+    <strong>Não faz sentido em:</strong> classificação. "Meu modelo de inadimplência tem R² de
+    0,7" não quer dizer nada — não existe "quanto da variação de sim/não" foi explicada da forma
+    que o R² mede.
+  </p>
+
+  <h3>O que é um R² bom?</h3>
+  <p>
+    <strong>Não existe um corte universal</strong> — e aqui a ressalva pesa ainda mais do que no
+    AUC, porque R² não mede o quão bom é o modelo, mede quanta variância o <em>fenômeno</em> tem
+    pra explicar em primeiro lugar. Um R² de 0,30 pode ser decepcionante numa reação química
+    controlada em laboratório e, ao mesmo tempo, um resultado forte quando a variável prevista é
+    comportamento humano.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>R²</th><th>Leitura genérica</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0,00</td><td>O modelo não explica mais do que simplesmente usar a média</td></tr>
+        <tr><td>0,00 – 0,10</td><td>Muito fraco na maioria dos contextos — mas ver ressalva abaixo</td></tr>
+        <tr><td>0,10 – 0,30</td><td>Fraco a moderado pela régua genérica — pode já ser "bom" em dados de comportamento humano</td></tr>
+        <tr><td>0,30 – 0,60</td><td>Moderado a forte — comum em boas relações econômicas e de mercado</td></tr>
+        <tr><td>0,60 – 0,90</td><td>Forte — típico de processos físicos/de engenharia com pouco ruído</td></tr>
+        <tr><td>0,90 – 1,00</td><td>Muito forte — esperado em experimentos controlados; <strong>fora deles, merece desconfiança</strong> (mesmo alerta de vazamento/overfitting do AUC vale aqui)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-title">"Bom" depende do mercado — e aqui, também do quanto o fenômeno é humano</span>
+    Diferente de AUC/Gini, que sempre competem contra "adivinhar ao acaso", R² compete contra
+    "só usar a média". Quanto mais ruído comportamental existe no fenômeno, menor é o teto de R²
+    que qualquer modelo — por melhor que seja — consegue atingir:
+    <ul style="margin-top:10px;">
+      <li><strong>Ciências físicas e engenharia (relação quase determinística):</strong> R² acima
+      de 0,90 costuma ser esperado; um R² de 0,30 ali seria sinal de que falta uma variável
+      relevante no modelo, não de que o fenômeno é "naturalmente ruidoso".</li>
+      <li><strong>Comportamento humano / precificação (o caso do projeto de precificação
+      dinâmica deste portfólio):</strong> a primeira tentativa, tratando o problema como
+      elasticidade clássica, deu R² de <strong>0,046</strong> — estatisticamente quase nulo. Os
+      modelos finais de regressão (OLS e XGBoost) chegaram a R² entre <strong>12% e 19%</strong>.
+      Pela régua genérica isso é "fraco", mas na literatura de ciências comportamentais um R² nessa
+      faixa já é tratado como um resultado real, porque decisão humana tem um componente de ruído
+      que nenhuma variável observável explica por completo.</li>
+      <li><strong>Elasticidade-preço no varejo (o caso do projeto de elasticidade — Online Retail
+      II — deste portfólio):</strong> entre os produtos com elasticidade estatisticamente
+      significativa, o R² mediano foi de <strong>0,21</strong> (intervalo interquartil de 0,13 a
+      0,34). Preço explica parte da variação de vendas, mas sazonalidade, estoque e campanhas de
+      marketing também empurram a demanda e não estão no modelo — um R² de 1,0 ali seria motivo de
+      suspeita, não de orgulho.</li>
+      <li><strong>Retorno de ativos financeiros:</strong> mercados eficientes tornam o retorno
+      quase imprevisível a partir de variáveis observáveis — um R² de poucos pontos percentuais já
+      costuma ser tratado como um sinal genuíno nesse mercado, não como ruído.</li>
+    </ul>
+    Por isso, antes de julgar um R² "baixo" como modelo ruim, a pergunta certa é: quanto dessa
+    variação é, por natureza, inexplicável com os dados disponíveis? Um R² de 0,15 pode ser o teto
+    real do fenômeno, não uma falha de modelagem — assim como no AUC, "bom" só existe em
+    comparação com a referência daquele mercado específico.
+  </div>
+
+  <h2>Curva ROC / AUC — para classificação binária</h2>
+  <p>
+    Usada quando a variável prevista é <strong>categórica binária</strong> — inadimplente ou
+    não, fraude ou não, doente ou não. Mede a capacidade do modelo de <strong>separar</strong> as
+    duas classes, testando todos os limiares de decisão possíveis ao mesmo tempo (por isso o
+    resultado não muda se você trocar o limiar de decisão de 0,5 pra 0,15 — é a mesma curva,
+    só um ponto diferente nela).
+  </p>
+  <p>
+    AUC vai de 0,5 (modelo aleatório) a 1,0 (separação perfeita). <strong>Não faz sentido em:</strong>
+    regressão — não existe "taxa de falso positivo" quando o que você prevê é um número contínuo.
+  </p>
+
+  <h3>O que é um AUC bom?</h3>
+  <p>
+    <strong>Não existe um corte universal</strong> — a tabela abaixo é só um ponto de partida
+    genérico, útil pra quem está começando. Na prática, "bom" é relativo ao mercado e ao quão
+    previsível o fenômeno é por natureza:
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>AUC</th><th>Leitura genérica</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0,50</td><td>Aleatório — o modelo não aprendeu nada</td></tr>
+        <tr><td>0,50 – 0,60</td><td>Ruim — quase inútil na prática</td></tr>
+        <tr><td>0,60 – 0,70</td><td>Fraco — separa um pouco, mas com muita sobreposição</td></tr>
+        <tr><td>0,70 – 0,80</td><td>Aceitável — usável na maioria dos contextos de negócio</td></tr>
+        <tr><td>0,80 – 0,90</td><td>Bom — o modelo de risco de crédito deste post está aqui (0,853)</td></tr>
+        <tr><td>0,90 – 1,00</td><td>Excelente — <strong>mas merece desconfiança</strong> (ver abaixo)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-title">"Bom" depende do mercado, não só do número</span>
+    O mesmo AUC pode ser mediano num setor e excelente em outro — porque cada mercado tem uma
+    referência própria (o que os concorrentes/benchmarks já praticam) e um teto natural de
+    previsibilidade diferente:
+    <ul style="margin-top:10px;">
+      <li><strong>Crédito ao consumidor:</strong> comportamento humano tem muito ruído — na
+      prática do mercado, AUC entre 0,75 e 0,85 (Gini entre ~0,5 e ~0,7) já é considerado um bom
+      scorecard. É raro ver AUC acima de 0,90 de forma sustentável, e quando aparece, geralmente
+      é o sinal de alerta do próximo tópico, não uma vitória.</li>
+      <li><strong>Diagnóstico médico com biomarcadores:</strong> quando o exame mede algo
+      fisiologicamente ligado à doença, o "teto" de previsibilidade é mais alto — AUC de 0,90+ é
+      esperado pra um exame ser clinicamente útil; 0,80 ali seria considerado fraco.</li>
+      <li><strong>Modelos de resposta a campanha / propensão de compra:</strong> prever se uma
+      pessoa vai clicar ou comprar é notoriamente ruidoso — AUC de 0,65 a 0,70 já costuma ser
+      tratado como um bom resultado nesse mercado.</li>
+    </ul>
+    Ou seja: antes de julgar um AUC como "bom" ou "ruim" fora de contexto, a pergunta certa é
+    "qual é a referência desse mercado especificamente?" — não só olhar a régua genérica acima.
+  </div>
+
+  <div class="callout rigor">
+    <span class="callout-title">AUC muito alto é sinal de alerta, não de vitória</span>
+    Um AUC acima de ~0,95 num problema de negócio real (crédito, churn, fraude, saúde) é mais
+    frequentemente sintoma de erro do que de um modelo excepcional. As causas mais comuns:
+    <ul style="margin-top:10px;">
+      <li><strong>Vazamento de dado (data leakage):</strong> uma feature que "sabe" o resultado
+      de outro jeito — ex: uma coluna calculada depois do evento que você está tentando prever,
+      ou algo que só existe justamente porque o cliente já inadimpliu.</li>
+      <li><strong>Overfitting:</strong> o modelo decorou o conjunto de treino em vez de aprender
+      um padrão generalizável — AUC alto no treino, baixo em dado novo.</li>
+      <li><strong>Problema fácil demais / artificial:</strong> dataset sintético ou com uma
+      variável dominante demais (lembra do <code>Vehicle_Type</code> no projeto de precificação
+      dinâmica? Se ele sozinho decidisse quase tudo, um AUC alto ali não seria motivo de
+      orgulho — seria só reflexo de um problema pouco desafiador).</li>
+    </ul>
+    Na prática: sempre que um modelo "acerta demais", a primeira pergunta não é "que bom", é
+    "o que eu deixei vazar pro modelo que ele não deveria ter visto?"
+  </div>
+
+  <h2>Índice de Gini — o queridinho do mercado de crédito</h2>
+  <p>
+    Aqui está o ponto menos conhecido fora da área financeira: o Gini <strong>não é uma métrica
+    nova</strong> — é a curva ROC reexpressa numa escala diferente, usada como convenção no
+    mercado de crédito (inclusive citada em normas regulatórias bancárias, como Basileia).
+  </p>
+  <p>
+    <code>Gini = 2 × AUC − 1</code>
+  </p>
+  <p>
+    Geometricamente, é duas vezes a área entre a curva ROC e a diagonal do "modelo aleatório" —
+    mede o quanto o modelo se afasta do acaso, numa escala de 0 (aleatório) a 1 (perfeito).
+  </p>
+
+  <figure>
+    <img src="../assets/img/credito_3.png" alt="Curva ROC do modelo de risco de crédito, AUC de 0,853">
+    <figcaption>A mesma curva ROC serve pra calcular AUC ou Gini — Gini é só o dobro da área entre a curva azul e a linha tracejada.</figcaption>
+  </figure>
+
+  <div class="callout case">
+    <span class="callout-title">Estudo de caso — risco de crédito</span>
+    O modelo de regressão logística que treinei pra prever inadimplência teve <strong>AUC =
+    0,8533</strong>. Convertendo: <strong>Gini = 2 × 0,8533 − 1 = 0,7066</strong>. Na prática do
+    mercado de crédito, um scorecard com Gini acima de 0,4 já é considerado aceitável, e acima
+    de 0,6 é tido como muito bom — 0,71 é um resultado forte.
+  </div>
+
+  <div class="callout rigor">
+    <span class="callout-title">Cuidado: existem dois "Gini" diferentes</span>
+    O <strong>Índice de Gini</strong> deste artigo (usado em crédito, derivado da curva ROC) não
+    é a mesma coisa que a <strong>Impureza de Gini</strong> usada como critério de divisão em
+    árvores de decisão (Random Forest, CART). Compartilham o nome porque os dois vêm da mesma
+    ideia original de desigualdade estatística (a curva de Lorenz, da economia), mas a fórmula e
+    o uso são completamente diferentes: um mede separação de classes num modelo de score, o
+    outro mede a "pureza" de um nó ao decidir onde cortar uma árvore. Se alguém falar "Gini" numa
+    entrevista, vale perguntar em que contexto — os dois são comuns o suficiente pra gerar
+    confusão.
+  </div>
+
+  <h2>Por que o mercado financeiro prefere Gini a AUC</h2>
+  <p>
+    Não é por precisão — é convenção e regulação. Bancos e agências de crédito historicamente
+    reportam Gini (ou o KS, outra métrica de separação, fora do escopo deste post) em vez de AUC
+    nos relatórios de validação de modelo. Pra quem transita entre as duas áreas: o número muda,
+    mas a curva por trás é sempre a mesma. Se um relatório de crédito disser "Gini de 0,45" e
+    você quiser comparar com um AUC, é só inverter a fórmula:
+  </p>
+  <p>
+    <code>AUC = (Gini + 1) / 2</code>
+  </p>
+
+  <h2>Resumindo</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Métrica</th><th>Tipo de problema</th><th>Faixa de valores</th><th>Onde aparece mais</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>R²</td><td>Regressão (target contínuo)</td><td>~0 a 1</td><td>Estatística geral, econometria</td></tr>
+        <tr><td>ROC / AUC</td><td>Classificação binária</td><td>0,5 a 1,0</td><td>ML geral, medicina, ciência de dados</td></tr>
+        <tr><td>Gini</td><td>Classificação binária (mesma base do AUC)</td><td>0 a 1</td><td>Mercado de crédito, scorecards, compliance bancário</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    As três métricas não competem entre si — cada uma é a "língua nativa" de um contexto. Saber
+    transitar entre R², AUC e Gini (e saber quando cada uma simplesmente não se aplica) é menos
+    sobre decorar fórmula e mais sobre entender que tipo de pergunta cada área está
+    acostumada a fazer sobre um modelo.
+  </p>
+
+  <h2>Fontes</h2>
+  <ul>
+    <li><a href="https://doi.org/10.1002/9781118548387" target="_blank" rel="noopener">Hosmer, Lemeshow &amp; Sturdivant (2013) — Applied Logistic Regression, 3ª edição, Wiley</a> — origem da tabela de referência de AUC (0,7–0,8 aceitável, 0,8–0,9 excelente, 0,9+ excepcional).</li>
+    <li><a href="https://www.google.com/books/edition/_/rEe0BQAAQBAJ" target="_blank" rel="noopener">Cohen, J. (1988) — Statistical Power Analysis for the Behavioral Sciences, 2ª edição</a> — referência clássica por trás da ideia de que "pequeno", "médio" e "grande" para R²/efeito dependem da área de estudo, não de um corte universal.</li>
+    <li><a href="https://doi.org/10.1002/9781119201731" target="_blank" rel="noopener">Siddiqi, N. — Credit Risk Scorecards: Developing and Implementing Intelligent Credit Scoring, Wiley</a> — referência de mercado para os benchmarks de Gini em crédito (~0,4 aceitável, ~0,6+ muito bom) usados no estudo de caso deste post.</li>
+    <li><a href="https://doi.org/10.1093/rfs/hhm055" target="_blank" rel="noopener">Campbell &amp; Thompson (2008) — Predicting Excess Stock Returns Out of Sample, The Review of Financial Studies 21(4)</a> — exemplo acadêmico de como um R² de poucos pontos percentuais já é tratado como um resultado economicamente relevante em mercados eficientes.</li>
+  </ul>
+
+</article>
+
+<div class="article-footer">
+  <div class="project-link">
+    <div>
+      <h4>Veja a aplicação completa</h4>
+      <p>Notebook com o modelo de risco de crédito, incluindo o cálculo do Gini logo após a curva ROC.</p>
+    </div>
+    <a href="#" class="btn btn-ghost" data-github-link>Ver notebook no GitHub →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Feito com HTML, CSS e JavaScript puro. © <span id="year"></span> Nathalia Mainenti.</p>
+  </div>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>

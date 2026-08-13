@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cotovelo, Silhueta e Dendrograma — Nathalia Mainenti</title>
+<meta name="description" content="As três formas mais comuns de escolher o número de clusters num problema não supervisionado, com um estudo de caso real usando o dataset Iris.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="blog.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand">Nathalia Mainenti</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html#sobre">Sobre</a></li>
+      <li><a href="../index.html#skills">Skills</a></li>
+      <li><a href="../index.html#projetos">Projetos</a></li>
+      <li><a href="index.html" class="active">Blog</a></li>
+      <li><a href="../index.html#contato">Contato</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Alternar tema claro/escuro">
+        <svg id="iconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg id="iconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header class="article-header">
+  <div class="container">
+    <a href="index.html" class="back-link">← Blog</a>
+    <div class="post-meta">
+      <span>Clustering</span>
+      <span class="dot"></span>
+      <span>6 min de leitura</span>
+    </div>
+    <h1>Cotovelo, silhueta e dendrograma: como decidir quantos clusters usar</h1>
+    <p class="dek">
+      Três formas diferentes de responder a mesma pergunta em aprendizado não supervisionado —
+      "quantos grupos existem aqui?" — e o que fazer quando elas discordam entre si.
+    </p>
+  </div>
+</header>
+
+<article class="post-body">
+
+  <p class="lede">
+    Em aprendizado supervisionado, o número de classes é um dado — está no rótulo. Em
+    clustering, não: o algoritmo não sabe se deve encontrar 2 grupos, 5 ou 20. Essa decisão é
+    sua, e existem três ferramentas clássicas pra te ajudar a tomá-la. Elas não são
+    intercambiáveis — cada uma responde a uma pergunta ligeiramente diferente.
+  </p>
+
+  <h2>O método do cotovelo</h2>
+  <p>
+    Mede a <strong>inércia</strong>: a soma das distâncias ao quadrado de cada ponto até o
+    centro (centróide) do cluster ao qual ele pertence — em outras palavras, o quanto os pontos
+    estão espalhados dentro de cada grupo.
+  </p>
+  <p>
+    Na prática, você roda o K-Means para vários valores de <code>k</code> e plota a inércia
+    resultante. Ela sempre cai conforme <code>k</code> aumenta (mais grupos → grupos menores →
+    pontos mais perto do centro), até o caso trivial de <code>k = n</code>, onde cada ponto é o
+    seu próprio cluster e a inércia é zero. O que se procura é o ponto onde essa queda
+    desacelera — o "cotovelo" do gráfico.
+  </p>
+  <p>
+    A limitação principal: é uma leitura visual, sem um valor de corte exato, e só existe porque
+    o K-Means é baseado em centróides — não dá pra aplicar em qualquer algoritmo de clustering.
+  </p>
+
+  <h2>Silhouette score</h2>
+  <p>
+    Para cada ponto, compara a distância média até os outros pontos do <strong>seu próprio
+    cluster</strong> com a distância média até os pontos do <strong>cluster vizinho mais
+    próximo</strong>. O resultado é um valor entre -1 e 1 por ponto — a média de todos os pontos
+    vira o silhouette score do modelo.
+  </p>
+  <p>
+    Valor alto significa que o ponto está bem encaixado no seu grupo e bem separado dos demais;
+    valor baixo (ou negativo) indica um ponto na fronteira, possivelmente mal classificado.
+  </p>
+  <p>
+    A vantagem sobre o cotovelo: é um número objetivo e comparável entre diferentes valores de
+    <code>k</code>, e funciona com qualquer algoritmo de clustering — não só K-Means.
+  </p>
+
+  <figure>
+    <img src="../assets/img/iris_2.png" alt="Gráfico do método do cotovelo (inércia por k) ao lado do gráfico de silhouette score por k, ambos calculados no dataset Iris">
+    <figcaption>Cotovelo (esquerda) e silhouette score (direita) calculados no dataset Iris, k de 2 a 7. O cotovelo não mostra uma quebra clara; a silhueta aponta k=2 como o mais alto.</figcaption>
+  </figure>
+
+  <h2>Dendrograma</h2>
+  <p>
+    Diferente dos outros dois, o dendrograma não é uma métrica que aponta "qual k é melhor" — é
+    a <strong>árvore inteira de fusões</strong> de um clustering hierárquico. Cada ponto começa
+    como seu próprio cluster; a cada passo, os dois clusters mais próximos são fundidos, até
+    sobrar um único cluster no topo.
+  </p>
+  <p>
+    Você não precisa decidir <code>k</code> antes — a árvore inteira já existe, e você a "corta"
+    numa altura escolhida depois de olhar o resultado. Quanto mais alta a fusão no gráfico, mais
+    forçada (menos natural) ela é.
+  </p>
+  <p>
+    A vantagem é ser visual e intuitivo — fácil de apresentar pra alguém que não é técnico — e
+    mostrar a estrutura em <strong>todos os níveis de granularidade ao mesmo tempo</strong>, não
+    só em um <code>k</code> específico.
+  </p>
+
+  <figure>
+    <img src="../assets/img/iris_3.png" alt="Dendrograma do dataset Iris com linkage ward, com linhas marcando o corte em 2 e em 3 clusters">
+    <figcaption>Dendrograma (linkage <code>ward</code>) do dataset Iris. A linha vermelha corta em 2 clusters, a azul em 3 — repare que o ramo verde só se divide numa fusão bem mais alta (tardia) que a separação do ramo laranja.</figcaption>
+  </figure>
+
+  <h2>Os três, lado a lado</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Método</th><th>Tipo de saída</th><th>Precisa de k antes?</th><th>Funciona com qualquer algoritmo?</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Cotovelo</td><td>Gráfico, leitura subjetiva</td><td>Sim (testa vários)</td><td>Não — só K-Means/centróide</td></tr>
+        <tr><td>Silhouette</td><td>Número objetivo (-1 a 1)</td><td>Sim (testa vários)</td><td>Sim</td></tr>
+        <tr><td>Dendrograma</td><td>Árvore visual completa</td><td>Não</td><td>Só clustering hierárquico</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout case">
+    <span class="callout-title">Estudo de caso — dataset Iris</span>
+    Apliquei os três métodos num problema real: agrupar 150 flores em espécies usando só 4
+    medidas (comprimento e largura de sépala e pétala), sem informar a espécie ao algoritmo.
+    <br><br>
+    O <strong>cotovelo</strong> não deu uma quebra clara. A <strong>silhueta</strong> apontou
+    <code>k=2</code> (score de 0,58) como melhor que <code>k=3</code> (0,46) — mesmo sabendo que
+    existem 3 espécies reais no dataset. O <strong>dendrograma</strong> confirmou a mesma leitura:
+    a fusão entre duas das três espécies acontece muito mais tarde na árvore que a separação da
+    terceira, ou seja, ele "enxerga" 2 grupos bem definidos, não 3.
+    <br><br>
+    Os três métodos concordaram entre si — e o motivo é biológico: duas das três espécies
+    (<em>versicolor</em> e <em>virginica</em>) se parecem muito e se sobrepõem no espaço de
+    features, enquanto a terceira (<em>setosa</em>) é claramente distinta. Rodando o K-Means
+    com <code>k=3</code> mesmo assim (pra comparar contra o gabarito real), o modelo acertou
+    83,3% das flores — 100% de acerto na espécie distinta, e a maior parte dos erros
+    concentrada exatamente na dupla que se sobrepõe.
+  </div>
+
+  <div class="callout rigor">
+    <span class="callout-title">Ressalva</span>
+    Um número de silhueta mais alto não significa "resposta certa" — significa "geometricamente
+    mais separável dado o que essas features conseguem enxergar". Se o objetivo é comparar
+    contra um gabarito conhecido (como espécie, categoria de cliente etc.), pode fazer sentido
+    escolher um <code>k</code> diferente do que as métricas sugerem — desde que isso fique
+    documentado como uma decisão consciente, não escondido atrás do número.
+  </div>
+
+  <h2>Quando usar cada um</h2>
+  <ul>
+    <li><strong>Cotovelo:</strong> primeira leitura rápida, específica pra K-Means, quando você só quer uma noção inicial de ordem de grandeza para <code>k</code>.</li>
+    <li><strong>Silhouette:</strong> quando você precisa de um número defensável pra justificar a escolha de <code>k</code> — funciona com qualquer algoritmo, inclusive pra comparar K-Means com clustering hierárquico.</li>
+    <li><strong>Dendrograma:</strong> quando você não tem ideia de quantos grupos existem e quer explorar visualmente antes de decidir, quando a estrutura dos dados é naturalmente hierárquica/aninhada, ou quando vai apresentar o raciocínio pra alguém não técnico.</li>
+  </ul>
+
+  <p>
+    Na prática, os três se complementam: o cotovelo dá uma primeira impressão, a silhueta
+    formaliza um número, e o dendrograma oferece uma segunda leitura visual e independente. Uma
+    “terceira opinião” concordando com a segunda é bem mais forte do que confiar numa métrica
+    isolada.
+  </p>
+
+</article>
+
+<div class="article-footer">
+  <div class="project-link">
+    <div>
+      <h4>Veja a aplicação completa</h4>
+      <p>Notebook com o estudo de caso do Iris — EDA, os três métodos, K-Means e um apêndice testando se a acurácia melhora com seleção de features.</p>
+    </div>
+    <a href="#" class="btn btn-ghost" data-github-link>Ver notebook no GitHub →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Feito com HTML, CSS e JavaScript puro. © <span id="year"></span> Nathalia Mainenti.</p>
+  </div>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nathalia Mainenti — Portfólio de Data Science</title>
+<meta name="description" content="Portfólio de Nathalia Mainenti — projetos de precificação e modelagem estatística em transição de carreira para Data Science.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#topo" class="nav-brand">Nathalia Mainenti</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#sobre" data-nav>Sobre</a></li>
+      <li><a href="#skills" data-nav>Skills</a></li>
+      <li><a href="#projetos" data-nav>Projetos</a></li>
+      <li><a href="blog/index.html">Blog</a></li>
+      <li><a href="#contato" data-nav>Contato</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Alternar tema claro/escuro">
+        <svg id="iconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg id="iconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="topo">
+  <div class="container hero-inner">
+    <div class="avatar-wrap">
+      <img src="assets/avata_nathalia.jpeg" alt="Foto de perfil de Nathalia">
+    </div>
+    <div>
+      <span class="eyebrow">Disponível para oportunidades júnior</span>
+      <h1>Nathalia Mainenti</h1>
+      <p class="role">Profissional em transição de carreira para Data Science</p>
+      <p class="lead">
+        MBA em Data Science e Analytics (USP/Esalq) e background sólido em rotinas financeiras —
+        combinando entendimento de negócio com modelagem estatística para construir soluções
+        de dados orientadas a impacto.
+      </p>
+      <div class="hero-actions">
+        <a href="#projetos" class="btn btn-primary">Ver projetos</a>
+        <a href="#contato" class="btn btn-ghost">Contato</a>
+        <a href="assets/curriculo-nathalia.pdf" class="btn btn-ghost" data-cv-link download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0-4-4m4 4 4-4M4 19h16"/></svg>
+          Baixar currículo
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="sobre">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="section-tag">Sobre</p>
+      <h2>Da rotina financeira para a ciência de dados</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>
+          Profissional em transição de carreira para <strong>Data Science</strong>, com base em
+          <strong>Ciências Contábeis pela UERJ</strong>, <strong>MBA em Data Science e Analytics
+          pela USP/Esalq (2025)</strong> e <strong>Especialização em Finanças em andamento pela
+          UFF (2027)</strong>.
+        </p>
+        <p>
+          No TCC, desenvolvi modelagem estatística com <strong>Regressão Logística Binária e
+          Razões de Chances (Odds Ratios)</strong> aplicada a uma base de mais de
+          <strong>27 milhões de registros</strong>, com foco em perfil e comportamento de
+          investidores do Tesouro Direto — resumo executivo
+          <a href="https://revistaes.com.br/resumo-executivo/determinantes-do-perfil-dos-investidores-do-tesouro-direto-uma-analise-descritiva-por-razoes-de-chances-2002-06-2025" target="_blank" rel="noopener">publicado na Revista E&amp;S</a>.
+        </p>
+        <p>
+          Tenho conhecimento prático de <strong>Python (Pandas, NumPy, Statsmodels)</strong>
+          aplicado a análise e modelagem de dados, <strong>SQL</strong> em desenvolvimento, e
+          prática em versionamento de código (<strong>Git</strong>).
+        </p>
+        <p>
+          Combino <strong>4 anos de vivência em rotinas financeiras e operacionais</strong>
+          (faturamento, custos, conciliação, DRE, DFC) com formação analítica sólida — trazendo
+          entendimento de negócio real para a construção de soluções orientadas a impacto.
+        </p>
+      </div>
+      <ul class="highlight-list reveal">
+        <li>
+          <span class="dot"></span>
+          <div>
+            <h4>Ciências Contábeis</h4>
+            <p>UERJ</p>
+          </div>
+        </li>
+        <li>
+          <span class="dot"></span>
+          <div>
+            <h4>MBA Data Science &amp; Analytics</h4>
+            <p>USP/Esalq — concluído em 2025</p>
+          </div>
+        </li>
+        <li>
+          <span class="dot"></span>
+          <div>
+            <h4>Especialização em Finanças</h4>
+            <p>UFF — em andamento, conclusão prevista em 2027</p>
+          </div>
+        </li>
+        <li>
+          <span class="dot"></span>
+          <div>
+            <h4>TCC: comportamento de investidores</h4>
+            <p>Regressão Logística Binária e Odds Ratios · base com 27M+ registros ·
+            <a href="https://revistaes.com.br/resumo-executivo/determinantes-do-perfil-dos-investidores-do-tesouro-direto-uma-analise-descritiva-por-razoes-de-chances-2002-06-2025" target="_blank" rel="noopener">resumo publicado</a></p>
+          </div>
+        </li>
+        <li>
+          <span class="dot"></span>
+          <div>
+            <h4>4 anos em rotinas financeiras</h4>
+            <p>Faturamento, custos, conciliação, DRE e DFC</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="section-tag">Skills</p>
+      <h2>Ferramentas e técnicas</h2>
+      <p>Stack técnica combinada com o vocabulário de negócio financeiro.</p>
+    </div>
+
+    <div class="reveal">
+      <div class="skills-group">
+        <h4>Linguagens &amp; Dados</h4>
+        <div class="pill-row">
+          <span class="pill">Python</span>
+          <span class="pill">Pandas</span>
+          <span class="pill">NumPy</span>
+          <span class="pill">Statsmodels</span>
+          <span class="pill">scikit-learn</span>
+          <span class="pill">XGBoost</span>
+          <span class="pill">SciPy</span>
+          <span class="pill pill--learning">SQL (em desenvolvimento)</span>
+          <span class="pill">Git</span>
+          <span class="pill">IA Generativa aplicada a produtividade</span>
+        </div>
+      </div>
+      <div class="skills-group">
+        <h4>Modelagem &amp; Estatística</h4>
+        <div class="pill-row">
+          <span class="pill">Regressão Linear Múltipla</span>
+          <span class="pill">Regressão Logística Binária</span>
+          <span class="pill">Odds Ratios</span>
+          <span class="pill">Regressão Lasso</span>
+          <span class="pill">Elasticidade-preço</span>
+          <span class="pill">Testes de hipótese</span>
+          <span class="pill">Clustering (K-Means)</span>
+          <span class="pill">Clustering Hierárquico</span>
+          <span class="pill">Silhouette Score</span>
+        </div>
+      </div>
+      <div class="skills-group">
+        <h4>Negócio &amp; Finanças</h4>
+        <div class="pill-row">
+          <span class="pill">Faturamento</span>
+          <span class="pill">Custos</span>
+          <span class="pill">Conciliação</span>
+          <span class="pill">DRE</span>
+          <span class="pill">DFC</span>
+          <span class="pill">Excel Avançado</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projetos">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="section-tag">Projetos</p>
+      <h2>Estudos de caso de Machine Learning aplicado a negócio</h2>
+      <p>
+        Estudos de caso de ponta a ponta — regressão, clustering e classificação — com foco em
+        diagnosticar o resultado antes de reportá-lo, incluindo achados negativos ou limitados
+        quando é isso que os dados mostram.
+      </p>
+    </div>
+
+    <div class="filter-row reveal" id="projectFilters" role="group" aria-label="Filtrar projetos por técnica">
+      <button class="filter-pill active" data-filter="todos">Todos</button>
+      <button class="filter-pill" data-filter="regressao">Regressão</button>
+      <button class="filter-pill" data-filter="clustering">Clustering</button>
+      <button class="filter-pill" data-filter="classificacao">Classificação</button>
+    </div>
+
+    <!-- Projeto 1 -->
+    <article class="project-card reveal" data-category="classificacao">
+      <div class="project-head">
+        <div>
+          <h3>Sobrevivência no Titanic — Comparação de 4 Algoritmos</h3>
+          <p class="subtitle">Titanic Dataset — EDA, engenharia de variáveis e Decision Tree, Regressão Logística, SVM e KNN lado a lado</p>
+        </div>
+        <div class="tag-row">
+          <span class="tag tag-blue">Classificação</span>
+          <span class="tag tag-green">Diagnóstico de modelo</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-col">
+          <h5>Problema</h5>
+          <p>
+            Prever se um passageiro sobreviveu ao naufrágio a partir de dados cadastrais — o
+            clássico da classificação binária, aqui usado pra comparar 4 algoritmos diferentes
+            no mesmo pipeline de dados.
+          </p>
+          <h5>Abordagem</h5>
+          <p>
+            Tratamento de nulos (idade pela média por classe, embarque pela moda), engenharia de
+            variáveis (faixas de idade/tarifa, tamanho de família a partir de irmãos+pais a
+            bordo) e treino de 4 modelos com o mesmo split, comparando não só acurácia como
+            precisão e recall de cada um.
+          </p>
+          <h5>Trecho de código</h5>
+          <div class="code-block">
+            <button class="copy-btn" data-copy>Copiar</button>
+            <pre><code>resultados = pd.DataFrame([
+    treinar_e_avaliar(DecisionTreeClassifier(...), 'Decision Tree'),
+    treinar_e_avaliar(LogisticRegression(...), 'Logistic Regression'),
+    treinar_e_avaliar(SVC(...), 'SVM'),
+    treinar_e_avaliar(KNeighborsClassifier(...), 'KNN'),
+])
+# os 4 empatam em acurácia (82,5%-83,4%)
+# mas KNN tem o maior recall e a menor precisão</code></pre>
+          </div>
+        </div>
+        <div class="project-col">
+          <h5>Visualização</h5>
+          <div class="chart-frame">
+            <img src="assets/img/titanic_8.png" alt="Sobrevivência por categoria: homem, mulher e criança" loading="lazy">
+          </div>
+          <h5>Resultado</h5>
+          <div class="finding-box positive">
+            Os 4 modelos empatam tecnicamente (82,5%–83,4% de acurácia) — depois de um bom
+            trabalho de feature engineering, o algoritmo importa menos que as variáveis
+            escolhidas. Achado extra: tamanho de família <strong>não é monotônico</strong> —
+            família pequena sobrevive mais que viajar sozinho, que sobrevive mais que família
+            grande. E o KNN vence em acurácia/recall mas tem a <em>menor</em> precisão do grupo,
+            o mesmo trade-off do post sobre precisão x recall.
+          </div>
+        </div>
+      </div>
+      <div class="project-footer">
+        <div class="stack-row">
+          <span class="pill">pandas</span><span class="pill">scikit-learn</span>
+          <span class="pill">seaborn</span>
+        </div>
+        <div class="tag-row">
+          <a href="blog/precisao-recall-f1-acuracia.html" class="btn btn-ghost">Precisão x Recall →</a>
+          <a href="#" class="btn btn-ghost" data-github-link>Ver notebook no GitHub →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Projeto 2 -->
+    <article class="project-card reveal" data-category="classificacao">
+      <div class="project-head">
+        <div>
+          <h3>Risco de Crédito — Classificação Binária</h3>
+          <p class="subtitle">Give Me Some Credit (Kaggle) — Regressão Logística, Odds Ratios e curva ROC</p>
+        </div>
+        <div class="tag-row">
+          <span class="tag tag-blue">Classificação</span>
+          <span class="tag tag-green">Diagnóstico de modelo</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-col">
+          <h5>Problema</h5>
+          <p>
+            Prever se um tomador de crédito vai apresentar inadimplência séria nos próximos 2
+            anos, a partir de dados cadastrais e de comportamento de crédito — 150 mil
+            registros, com valores nulos, duplicatas e inconsistências reais de cadastro.
+          </p>
+          <h5>Abordagem</h5>
+          <p>
+            Regressão Logística Binária via <code>statsmodels</code> — a mesma técnica do meu
+            TCC — pra interpretar o efeito de cada variável via <strong>Odds Ratios</strong>, com
+            avaliação por curva ROC/AUC e Gini (a métrica padrão do mercado de crédito), já que o
+            problema é desbalanceado (~7% de inadimplência).
+          </p>
+          <h5>Trecho de código</h5>
+          <div class="code-block">
+            <button class="copy-btn" data-copy>Copiar</button>
+            <pre><code>import statsmodels.api as sm
+
+X_train_sm = sm.add_constant(X_train)
+modelo = sm.Logit(y_train, X_train_sm).fit()
+
+odds_ratios = np.exp(modelo.params)
+# RevolvingUtilizationOfUnsecuredLines -> OR = 6,02
+# cada unidade a mais multiplica a chance
+# de inadimplência por 6x</code></pre>
+          </div>
+        </div>
+        <div class="project-col">
+          <h5>Visualização</h5>
+          <div class="chart-frame">
+            <img src="assets/img/credito_3.png" alt="Curva ROC do modelo de risco de crédito, AUC de 0,853" loading="lazy">
+          </div>
+          <h5>Resultado</h5>
+          <div class="finding-box positive">
+            <strong>AUC = 0,853</strong> (Gini = 0,707) — resultado forte pelos padrões do
+            mercado de crédito. Achado honesto: no limiar padrão (0,5), o modelo captura só
+            <strong>16% dos inadimplentes reais</strong>; baixando o limiar pra 0,15, o recall
+            sobe pra 50%, mas a acurácia geral <em>piora</em> (93,7% → 91,6%) — prova concreta de
+            que otimizar acurácia e otimizar recall são objetivos diferentes.
+          </div>
+        </div>
+      </div>
+      <div class="project-footer">
+        <div class="stack-row">
+          <span class="pill">statsmodels</span><span class="pill">scikit-learn</span>
+          <span class="pill">seaborn</span>
+        </div>
+        <div class="tag-row">
+          <a href="blog/precisao-recall-f1-acuracia.html" class="btn btn-ghost">Precisão x Recall →</a>
+          <a href="blog/r2-roc-gini.html" class="btn btn-ghost">R² x ROC x Gini →</a>
+          <a href="blog/padronizacao-dados-quando-importa.html" class="btn btn-ghost">Quando Padronizar? →</a>
+          <a href="#" class="btn btn-ghost" data-github-link>Ver notebook no GitHub →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Projeto 3 -->
+    <article class="project-card reveal" data-category="clustering">
+      <div class="project-head">
+        <div>
+          <h3>Clusterização de Espécies (Não Supervisionado)</h3>
+          <p class="subtitle">Iris Dataset — K-Means, silhueta, dendrograma e comparação com o gabarito real</p>
+        </div>
+        <div class="tag-row">
+          <span class="tag tag-blue">Clustering</span>
+          <span class="tag tag-green">Diagnóstico de modelo</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-col">
+          <h5>Problema</h5>
+          <p>
+            Agrupar 150 flores em espécies usando só 4 medidas de pétala e sépala — sem informar
+            a espécie ao algoritmo — e depois medir o quanto os grupos encontrados batem com o
+            gabarito real.
+          </p>
+          <h5>Abordagem</h5>
+          <p>
+            Três métodos independentes (cotovelo, silhueta, dendrograma) para escolher k antes de
+            rodar o K-Means, e o algoritmo húngaro para parear cluster↔espécie corretamente antes
+            de calcular a acurácia — já que os rótulos de cluster são numerados de forma arbitrária.
+          </p>
+          <h5>Trecho de código</h5>
+          <div class="code-block">
+            <button class="copy-btn" data-copy>Copiar</button>
+            <pre><code>from scipy.optimize import linear_sum_assignment
+
+crosstab = pd.crosstab(data['species'], data['cluster'])
+row_ind, col_ind = linear_sum_assignment(-crosstab.values)
+mapping = {crosstab.columns[c]: crosstab.index[r]
+           for r, c in zip(row_ind, col_ind)}
+
+data['cluster_label'] = data['cluster'].map(mapping)
+acerto = (data['cluster_label'] == data['species']).mean()
+# 83.3% com 4 features | 96.0% só com pétala</code></pre>
+          </div>
+        </div>
+        <div class="project-col">
+          <h5>Visualização</h5>
+          <div class="chart-frame">
+            <img src="assets/img/iris_4.png" alt="Espécies reais comparadas aos clusters encontrados pelo K-Means" loading="lazy">
+          </div>
+          <h5>Resultado</h5>
+          <div class="finding-box positive">
+            <strong>83,3% de acerto</strong> com as 4 features (100% em <em>setosa</em>, erros
+            concentrados entre <em>versicolor</em>/<em>virginica</em>). Num apêndice, usando só as
+            2 features de pétala, o acerto subiu para <strong>96,0%</strong>. Achado honesto: em
+            ambos os casos, a silhueta prefere k=2 a k=3 — documentado no notebook, não escondido.
+          </div>
+        </div>
+      </div>
+      <div class="project-footer">
+        <div class="stack-row">
+          <span class="pill">scikit-learn</span><span class="pill">scipy</span>
+          <span class="pill">seaborn</span>
+        </div>
+        <div class="tag-row">
+          <a href="blog/cotovelo-silhueta-dendrograma.html" class="btn btn-ghost">Ler artigo no blog →</a>
+          <a href="#" class="btn btn-ghost" data-github-link>Ver notebook no GitHub →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Projeto 4 -->
+    <article class="project-card reveal" data-category="regressao">
+      <div class="project-head">
+        <div>
+          <h3>Precificação Dinâmica (Surge Pricing)</h3>
+          <p class="subtitle">Dataset Uber/99 — engenharia de variáveis, OLS, XGBoost e diagnóstico de sinal</p>
+        </div>
+        <div class="tag-row">
+          <span class="tag tag-blue">Regressão</span>
+          <span class="tag tag-green">Diagnóstico de modelo</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-col">
+          <h5>Problema</h5>
+          <p>
+            Estimar o preço por minuto de uma corrida a partir do contexto (oferta/demanda,
+            fidelidade, horário, tipo de veículo) — isolando o componente de "surge" do
+            efeito óbvio da duração da corrida.
+          </p>
+          <h5>Abordagem</h5>
+          <p>
+            Engenharia de variável (<code>price_per_min</code>) para remover a dominância da
+            duração sobre o preço bruto, one-hot encoding das categóricas, baseline OLS e
+            XGBoost — e um <strong>diagnóstico</strong> para investigar a causa de um R² baixo
+            em vez de apenas reportá-lo.
+          </p>
+          <h5>Trecho de código</h5>
+          <div class="code-block">
+            <button class="copy-btn" data-copy>Copiar</button>
+            <pre><code>data['price_per_min'] = (
+    data['Historical_Cost_of_Ride']
+    / data['Expected_Ride_Duration']
+)
+
+media_por_veiculo = data.groupby('Vehicle_Type')[
+    'price_per_min'].transform('mean')
+
+r2_so_vehicle = r2_score(data['price_per_min'],
+                          media_por_veiculo)
+# 0.173 -> quase idêntico ao R² do modelo
+# completo com 13 variáveis (0.191)</code></pre>
+          </div>
+        </div>
+        <div class="project-col">
+          <h5>Visualização</h5>
+          <div class="chart-frame">
+            <img src="assets/img/dynamic_4.png" alt="Importância das variáveis no modelo XGBoost" loading="lazy">
+          </div>
+          <h5>Resultado</h5>
+          <div class="finding-box positive">
+            <strong>Diagnóstico confirmado:</strong> praticamente todo o R² do modelo vem de
+            uma única variável (<code>Vehicle_Type</code>). Oferta/demanda tem correlação
+            próxima de zero com o preço — a hipótese de surge pricing não se sustenta
+            neste dataset sintético. Resultado negativo, honesto e defensável.
+          </div>
+        </div>
+      </div>
+      <div class="insight-note">
+        <span class="quote-label">Insights</span>
+        <p>
+          "Eu queria testar se o preço de corrida reagia à oferta e demanda — a hipótese
+          clássica de surge pricing. Rodei os modelos e o R² ficou baixo, entre 12% e 19%. Em
+          vez de aceitar isso, investiguei a causa: isolei que praticamente todo o poder
+          explicativo vinha de uma única variável, o tipo de veículo — Premium vs Economy — e
+          testei a correlação de cada variável de oferta/demanda com o preço, e todas deram
+          estatisticamente igual a zero. Concluí que a hipótese de surge pricing simplesmente
+          não se sustentava nesse dataset. É um resultado negativo, mas é um resultado correto,
+          e cheguei nele com rigor."
+        </p>
+      </div>
+      <div class="project-footer">
+        <div class="stack-row">
+          <span class="pill">pandas</span><span class="pill">statsmodels</span>
+          <span class="pill">XGBoost</span><span class="pill">seaborn</span>
+        </div>
+        <a href="#" class="btn btn-ghost" data-github-link>Ver notebook no GitHub →</a>
+      </div>
+    </article>
+
+    <!-- Projeto 5 -->
+    <article class="project-card reveal" data-category="regressao">
+      <div class="project-head">
+        <div>
+          <h3>Elasticidade-Preço da Demanda — Online Retail</h3>
+          <p class="subtitle">Online Retail II (UCI) — 1M+ transações reais, regressão log-log por produto e com efeito fixo</p>
+        </div>
+        <div class="tag-row">
+          <span class="tag tag-blue">Regressão</span>
+          <span class="tag tag-green">Validação Estatística</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-col">
+          <h5>Problema</h5>
+          <p>
+            Estimar a elasticidade-preço de produtos reais de uma loja de presentes online —
+            revisita a pergunta do projeto de Precificação Dinâmica, mas com um dataset escolhido
+            especificamente por ter sinal de preço genuíno (testado <em>antes</em> de montar o
+            notebook inteiro).
+          </p>
+          <h5>Abordagem</h5>
+          <p>
+            Limpeza de dado transacional real (cancelamentos, devoluções, códigos que não são
+            produtos), agregação produto×semana, regressão log-log individual em milhares de
+            produtos, e validação cruzada por um segundo método (regressão com efeito fixo) pra
+            confirmar o resultado com uma abordagem independente.
+          </p>
+          <h5>Trecho de código</h5>
+          <div class="code-block">
+            <button class="copy-btn" data-copy>Copiar</button>
+            <pre><code>for sc in produtos_elegiveis:
+    sub = painel[painel['StockCode'] == sc]
+    X = sm.add_constant(np.log(sub['price']))
+    modelo = sm.OLS(np.log(sub['qty']), X).fit()
+    # 60,8% dos produtos com p < 0,05
+    # mediana da elasticidade: -1,94</code></pre>
+          </div>
+        </div>
+        <div class="project-col">
+          <h5>Visualização</h5>
+          <div class="chart-frame">
+            <img src="assets/img/elasticidade_1.png" alt="Distribuição da elasticidade-preço estimada entre os produtos estatisticamente significativos" loading="lazy">
+          </div>
+          <h5>Resultado</h5>
+          <div class="finding-box positive">
+            <strong>60,8% dos produtos</strong> com elasticidade estatisticamente significativa
+            (98,3% com o sinal negativo esperado), mediana de <strong>-1,94</strong> — validada
+            por uma segunda regressão independente (efeito fixo, -2,20, p≈10⁻⁷⁹, R²=0,45). R²
+            individual por produto é mais modesto (mediana 0,21) — o preço é <em>um</em> fator de
+            venda, não o único, e essa é uma leitura diferente da confiabilidade estatística do
+            coeficiente.
+          </div>
+        </div>
+      </div>
+      <div class="insight-note">
+        <span class="quote-label">Insights</span>
+        <p>
+          "Depois de rodar uma regressão por produto (R² mediano de 0,21) e ver esse número subir
+          pra 0,452 quando agreguei os 40 produtos de maior receita numa regressão só com efeito
+          fixo, percebi que os dois resultados pareciam contradizer um ao outro — mas não
+          contradizem. Investigando a causa, achei duas explicações: o efeito fixo por produto
+          absorve a diferença de nível de venda entre produtos, meio que 'de graça', sem o preço
+          precisar explicar nada; e os 40 produtos de maior receita são justamente o subconjunto
+          com mais semanas de histórico e mais variação de preço, ou seja, menos ruidoso que a
+          base toda. Isso me mostrou, na prática, que R² não é uma propriedade fixa de um
+          fenômeno — é uma função da especificação do modelo e de qual amostra você escolhe
+          rodar. É a mesma lição do projeto de Precificação Dinâmica, onde uma única variável
+          categórica (Vehicle_Type) explicava quase todo o R², só que lá isso expunha um
+          problema e aqui era só o efeito esperado de agregar dados melhores."
+        </p>
+        <p>
+          "Outro ponto que vale deixar registrado: a regressão por produto usa só uma variável
+          (log do preço) — ela me dá direção, magnitude e significância estatística da relação
+          preço-demanda, mas não controla sazonalidade, estoque ou campanha de marketing. É
+          correlação, não causalidade controlada: o coeficiente pode estar absorvendo parte
+          desses fatores de fora do modelo. É também por isso que o R² é baixo — não é falha do
+          modelo, é o resultado esperado de deixar de fora, de propósito, variáveis que
+          sabidamente também mexem com a demanda."
+        </p>
+      </div>
+      <div class="project-footer">
+        <div class="stack-row">
+          <span class="pill">pandas</span><span class="pill">statsmodels</span>
+          <span class="pill">seaborn</span>
+        </div>
+        <a href="#" class="btn btn-ghost" data-github-link>Ver notebook no GitHub →</a>
+      </div>
+    </article>
+
+    <!-- Projeto 6 -->
+    <article class="project-card reveal" data-category="classificacao">
+      <div class="project-head">
+        <div>
+          <h3>Detecção de Fraude — Classificação Extremamente Desbalanceada</h3>
+          <p class="subtitle">Credit Card Fraud Detection (mlg-ulb) — 284 mil transações, 0,17% fraude, balanceamento e ajuste de limiar</p>
+        </div>
+        <div class="tag-row">
+          <span class="tag tag-blue">Classificação</span>
+          <span class="tag tag-green">Desbalanceamento Extremo</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-col">
+          <h5>Problema</h5>
+          <p>
+            Identificar transações fraudulentas de cartão de crédito entre 284 mil transações
+            reais — só 0,17% são fraude, o desbalanceamento mais extremo do portfólio (10x mais
+            raro que o projeto de risco de crédito).
+          </p>
+          <h5>Abordagem</h5>
+          <p>
+            Comparação de três técnicas de balanceamento (<code>class_weight</code>, SMOTE,
+            <code>scale_pos_weight</code> no XGBoost), avaliação por curva Precision-Recall em
+            vez de ROC (que fica artificialmente boa nesse nível de desbalanceamento), e ajuste
+            de limiar no modelo vencedor.
+          </p>
+          <h5>Trecho de código</h5>
+          <div class="code-block">
+            <button class="copy-btn" data-copy>Copiar</button>
+            <pre><code>modelo_cw = LogisticRegression(class_weight='balanced')
+# recall = 87,4% | precisão = 5,6%
+# -> 95% dos alertas seriam falso alarme
+
+# XGBoost + ajuste de limiar (0,5 -> 0,85):
+# precisão 59,7% -> 82,2%, recall quase igual</code></pre>
+          </div>
+        </div>
+        <div class="project-col">
+          <h5>Visualização</h5>
+          <div class="chart-frame">
+            <img src="assets/img/fraude_4.png" alt="Curvas Precision-Recall sobrepostas dos 4 modelos testados" loading="lazy">
+          </div>
+          <h5>Resultado</h5>
+          <div class="finding-box positive">
+            <strong>Achado honesto:</strong> balancear a classe sozinho não bastava —
+            <code>class_weight</code> e SMOTE davam recall de 87% mas precisão de só 5,6% no
+            limiar padrão. XGBoost com <code>scale_pos_weight</code> teve o melhor AUC-PR
+            (0,796) e, com o limiar ajustado pra 0,85, chegou a 82,2% de precisão mantendo 77,9%
+            de recall.
+          </div>
+        </div>
+      </div>
+      <div class="project-footer">
+        <div class="stack-row">
+          <span class="pill">scikit-learn</span><span class="pill">XGBoost</span>
+          <span class="pill">imbalanced-learn</span>
+        </div>
+        <div class="tag-row">
+          <a href="blog/auc-pr-deteccao-fraude.html" class="btn btn-ghost">AUC-PR e Fraude →</a>
+          <a href="#" class="btn btn-ghost" data-github-link>Ver notebook no GitHub →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Projeto 7 -->
+    <article class="project-card reveal" data-category="classificacao">
+      <div class="project-head">
+        <div>
+          <h3>Qualidade do Vinho — Classificação Multiclasse e Generalização de Domínio</h3>
+          <p class="subtitle">Wine Quality (UCI) — vinho tinto e branco, 3 modelos comparados e teste cruzado entre os dois domínios</p>
+        </div>
+        <div class="tag-row">
+          <span class="tag tag-blue">Classificação</span>
+          <span class="tag tag-green">Generalização de Domínio</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-col">
+          <h5>Problema</h5>
+          <p>
+            Classificar a qualidade de um vinho (baixa/média/alta) a partir de 11 propriedades
+            físico-químicas — e responder uma pergunta que o dataset original não faz: um modelo
+            treinado só com vinho tinto funciona em vinho branco?
+          </p>
+          <h5>Abordagem</h5>
+          <p>
+            Três classificadores treinados e comparados no vinho tinto (Regressão Logística
+            Multinomial, Random Forest e XGBoost), avaliação por F1-macro em vez de acurácia
+            (as categorias são desbalanceadas), e depois o modelo vencedor testado nos dois
+            sentidos: tinto→branco e branco→tinto.
+          </p>
+          <h5>Trecho de código</h5>
+          <div class="code-block">
+            <button class="copy-btn" data-copy>Copiar</button>
+            <pre><code>for nome, pred in [('Regressão Logística', pred_lr),
+                   ('Random Forest', pred_rf),
+                   ('XGBoost', pred_xgb)]:
+    print(nome, accuracy_score(y_test, pred),
+          f1_score(y_test, pred, average='macro'))
+# XGBoost venceu: acurácia 82,4% | F1-macro 0,518</code></pre>
+          </div>
+        </div>
+        <div class="project-col">
+          <h5>Visualização</h5>
+          <div class="chart-frame">
+            <img src="assets/img/vinho_3.png" alt="Matriz de confusão do XGBoost por categoria de qualidade (baixa, média, alta) no vinho tinto" loading="lazy">
+          </div>
+          <h5>Resultado</h5>
+          <div class="finding-box positive">
+            <strong>Achado honesto:</strong> XGBoost venceu no próprio domínio (tinto→tinto:
+            82,4% acurácia, F1-macro 0,518), mas a generalização cruzada colapsa — tinto→branco
+            cai pra F1-macro 0,334 e <strong>branco→tinto cai pra 53,6% de acurácia</strong>,
+            quase o nível de simplesmente chutar a categoria majoritária. As 11 variáveis são
+            idênticas nos dois datasets, mas tinto e branco são estatisticamente problemas
+            diferentes.
+          </div>
+        </div>
+      </div>
+      <div class="insight-note">
+        <span class="quote-label">Insights</span>
+        <p>
+          "Testei três tipos de modelo de propósito, não só um: Regressão Logística Multinomial
+          (linear, interpretável, minha referência de baseline), Random Forest (ensemble de
+          árvores, captura não-linearidade sem precisar escalar os dados) e XGBoost (boosting,
+          historicamente o mais forte em dados tabulares). Os três treinam e preveem do mesmo
+          jeito — <code>modelo.fit(X_train, y_train)</code> e <code>modelo.predict(X_test)</code>
+          — o que muda é como cada um aprende o limite de decisão entre as classes. O XGBoost
+          venceu por uma margem pequena (F1-macro 0,518 contra 0,506 do Random Forest), o que já
+          me disse que o teto do problema estava mais na informação disponível do que no
+          algoritmo escolhido. Por isso o próximo passo natural foi testar generalização em vez
+          de só ajustar hiperparâmetro: se o modelo não atravessa de tinto pra branco, o
+          problema não é o classificador, é que os dois vinhos não deveriam ser tratados como o
+          mesmo problema."
+        </p>
+      </div>
+      <div class="insight-note">
+        <span class="quote-label">Insights</span>
+        <p>
+          "Testei três tipos de modelo de propósito, não só um: Regressão Logística Multinomial
+          (linear, interpretável, minha referência de baseline), Random Forest (ensemble de
+          árvores, captura não-linearidade sem precisar escalar os dados) e XGBoost (boosting,
+          historicamente o mais forte em dados tabulares). Os três treinam e preveem do mesmo
+          jeito — <code>modelo.fit(X_train, y_train)</code> e <code>modelo.predict(X_test)</code>
+          — o que muda é como cada um aprende o limite de decisão entre as classes. O XGBoost
+          venceu por uma margem pequena (F1-macro 0,518 contra 0,506 do Random Forest), o que já
+          me disse que o teto do problema estava mais na informação disponível do que no
+          algoritmo escolhido. Por isso o próximo passo natural foi testar generalização em vez
+          de só ajustar hiperparâmetro: se o modelo não atravessa de tinto pra branco, o
+          problema não é o classificador, é que os dois vinhos não deveriam ser tratados como o
+          mesmo problema."
+        </p>
+      </div>
+      <div class="project-footer">
+        <div class="stack-row">
+          <span class="pill">scikit-learn</span><span class="pill">XGBoost</span>
+          <span class="pill">pandas</span>
+        </div>
+        <div class="tag-row">
+          <a href="blog/padronizacao-dados-quando-importa.html" class="btn btn-ghost">Quando Padronizar? →</a>
+          <a href="#" class="btn btn-ghost" data-github-link>Ver notebook no GitHub →</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Projeto 8 -->
+    <article class="project-card reveal" data-category="regressao">
+      <div class="project-head">
+        <div>
+          <h3>Previsão de Prêmio de Seguro Escrito</h3>
+          <p class="subtitle">Insurance Agency Performance — 213 mil linhas, book de agências, diagnóstico de R² estruturalmente alto</p>
+        </div>
+        <div class="tag-row">
+          <span class="tag tag-blue">Regressão</span>
+          <span class="tag tag-green">Diagnóstico de modelo</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-col">
+          <h5>Problema</h5>
+          <p>
+            Prever <code>WRTN_PREM_AMT</code> (prêmio escrito) por agência × produto × estado ×
+            ano, a partir de apólices em vigor, retenção, sinistralidade e cadastro da agência —
+            um dataset com valores sentinela (99999) espalhados por 16 colunas e um forte
+            candidato a vazamento de dado.
+          </p>
+          <h5>Abordagem</h5>
+          <p>
+            Mapeamento de sentinela por coluna (2,6% a 98% conforme o campo), remoção de
+            <code>PRD_ERND_PREM_AMT</code> por vazamento (corr. 0,995 com o target), imputação +
+            flag de ausência nas colunas com sentinela moderada, OLS como baseline e XGBoost
+            como modelo principal — seguido de um diagnóstico em duas camadas pra testar se o
+            R² alto era real ou estrutural.
+          </p>
+          <h5>Trecho de código</h5>
+          <div class="code-block">
+            <button class="copy-btn" data-copy>Copiar</button>
+            <pre><code># Reformulando pra tirar a quase-tautologia: prever a
+# TAXA (prêmio por apólice), não o total
+df = data[data['POLY_INFORCE_QTY'] >= 3]
+df['premio_por_apolice'] = (
+    df['WRTN_PREM_AMT'] / df['POLY_INFORCE_QTY']
+)
+# sem POLY_INFORCE_QTY/RETENTION_POLY_QTY nas features
+# R²: 0.984 (total) -> 0.750 (taxa, honesto)</code></pre>
+          </div>
+        </div>
+        <div class="project-col">
+          <h5>Visualização</h5>
+          <div class="chart-frame">
+            <img src="assets/img/seguro_3.png" alt="Importância das variáveis no modelo XGBoost de prêmio médio por apólice, versão honesta" loading="lazy">
+          </div>
+          <h5>Resultado</h5>
+          <div class="finding-box positive">
+            <strong>XGBoost (prêmio total): R²=0,984.</strong> Diagnóstico mostrou que boa parte
+            vinha de um efeito quase-contábil (apólices × prêmio médio) — reformulando o
+            problema pra prever <strong>prêmio médio por apólice</strong> em vez do total (e
+            tirando a contagem de apólices das features), o R² honesto cai pra
+            <strong>0,750</strong> (ingênuo: 0,160; OLS: 0,563) — mais baixo, mas defensável sem
+            ressalva, puxado por mix de produto e sinistralidade, não por aritmética disfarçada.
+          </div>
+        </div>
+      </div>
+      <div class="insight-note">
+        <span class="quote-label">Insights</span>
+        <p>
+          "Bati o olho num R²=0,98 e a primeira reação não foi comemorar, foi desconfiar — a
+          mesma regra que já tinha aplicado no projeto de Precificação Dinâmica. Testei se o
+          modelo era só uma ilusão de persistência: prever 'igual ano passado', sem nenhum
+          modelo, já dava R²=0,84. Depois fui mais fundo e tirei a variável do ano anterior
+          inteira — o R² mal caiu, foi pra 0,978. Quem assumiu como mais importante foi a
+          quantidade de apólices em vigor no próprio período, e aí percebi o motivo: prêmio
+          total é quase uma multiplicação (apólices × prêmio médio), então boa parte do 'modelo'
+          está reaprendendo uma conta, não um padrão de negócio."
+        </p>
+        <p>
+          "Pra não ficar só no diagnóstico, refiz o problema inteiro: em vez de prever o prêmio
+          total, previ o prêmio médio <strong>por apólice</strong>, tirando a contagem de
+          apólices das features. O R² caiu de 0,984 pra 0,75 — e isso não é uma notícia ruim, é
+          a resposta honesta. O ingênuo (taxa igual ano passado) também despencou, de 0,84 pra
+          0,16, confirmando que quase toda a 'estabilidade' do modelo original vinha da carteira
+          de apólices, não do preço. Prefiro defender um R²=0,75 que eu sei exatamente de onde
+          vem do que um R²=0,98 que eu só consigo explicar com 'bem, tem uma variável meio
+          tautológica ali'."
+        </p>
+      </div>
+      <div class="project-footer">
+        <div class="stack-row">
+          <span class="pill">pandas</span><span class="pill">statsmodels</span>
+          <span class="pill">XGBoost</span>
+        </div>
+        <a href="#" class="btn btn-ghost" data-github-link>Ver notebook no GitHub →</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="contato">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="section-tag">Contato</p>
+      <h2>Vamos conversar</h2>
+      <p>Aberta a oportunidades de Data Science júnior e conversas sobre dados e pricing.</p>
+    </div>
+    <div class="contact-grid reveal">
+      <a class="contact-card" href="mailto:nathaliamainenti@gmail.com">
+        <span class="ic">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        </span>
+        <span>
+          <span class="label">E-mail</span>
+          <span class="value">nathaliamainenti@gmail.com</span>
+        </span>
+      </a>
+      <a class="contact-card" href="https://www.linkedin.com/in/nathalia-mainenti-/" target="_blank" rel="noopener">
+        <span class="ic">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/><path d="M10 9v12M10 13a4 4 0 0 1 8 0v8"/></svg>
+        </span>
+        <span>
+          <span class="label">LinkedIn</span>
+          <span class="value">linkedin.com/in/nathalia-mainenti-</span>
+        </span>
+      </a>
+      <a class="contact-card" href="https://github.com/NathaliaMainenti" target="_blank" rel="noopener">
+        <span class="ic">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
+        </span>
+        <span>
+          <span class="label">GitHub</span>
+          <span class="value">github.com/NathaliaMainenti</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>Feito com HTML, CSS e JavaScript puro. © <span id="year"></span> Nathalia Mainenti.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
